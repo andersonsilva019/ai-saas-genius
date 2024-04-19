@@ -12,19 +12,30 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { useChat } from 'ai/react'
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
+import { Console } from "console";
+
 
 export default function ConversationPage() {
 
   const router = useRouter()
+  const openProModal = useProModal(state => state.onOpen)
 
   const { 
     messages: messagesUseChat, 
     handleSubmit, 
     input, 
     handleInputChange,
-    isLoading
+    isLoading,
+    error
   } = useChat({
     api: "/api/conversation",
+    onError(error) {
+      const errorMessage = JSON.parse(error.message)
+      if (errorMessage.status === 403) {
+        openProModal()
+      }
+    },
     onFinish() {
       router.refresh()
     },

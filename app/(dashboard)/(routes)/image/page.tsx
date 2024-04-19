@@ -35,10 +35,13 @@ import {
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 export default function ImagePage() {
 
   const [images, setImages] = useState<string[]>([])
+
+  const openProModal = useProModal(state => state.onOpen)
 
   const router = useRouter()
 
@@ -69,8 +72,9 @@ export default function ImagePage() {
       form.reset();
 
     } catch (error: any) {
-      // TODO: Open Pro Modal
-      console.log(error)
+      if(error?.response?.status === 403) {
+        openProModal()
+      }
     } finally {
       router.refresh();
     }

@@ -25,10 +25,12 @@ import { formSchema } from "./constants";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 export default function CodePage() {
 
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+  const openProModal = useProModal(state => state.onOpen)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,8 +59,9 @@ export default function CodePage() {
       form.reset();
 
     } catch (error: any) {
-      // TODO: Open Pro Modal
-      console.log(error)
+      if(error?.response?.status === 403) {
+        openProModal()
+      }
     } finally {
       //router.refresh();
     }
