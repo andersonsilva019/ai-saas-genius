@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { Music, VideoIcon } from "lucide-react";
+import { VideoIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import axios from 'axios';
@@ -20,10 +20,13 @@ import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 
 import { formSchema } from "./constants";
+import { useRouter } from "next/navigation";
 
 export default function VideoPage() {
 
   const [video, setVideo] = useState<string>();
+
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +52,7 @@ export default function VideoPage() {
       // TODO: Open Pro Modal
       console.log(error)
     } finally {
-      //router.refresh();
+      router.refresh();
     }
   }
 

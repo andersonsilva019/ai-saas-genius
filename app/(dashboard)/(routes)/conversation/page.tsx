@@ -11,8 +11,11 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { useChat } from 'ai/react'
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function ConversationPage() {
+
+  const router = useRouter()
 
   const { 
     messages: messagesUseChat, 
@@ -22,8 +25,8 @@ export default function ConversationPage() {
     isLoading
   } = useChat({
     api: "/api/conversation",
-    onFinish(message) {
-      console.log(message)
+    onFinish() {
+      router.refresh()
     },
   })
 

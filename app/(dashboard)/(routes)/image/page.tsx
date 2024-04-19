@@ -34,10 +34,13 @@ import {
 } from "./constants";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function ImagePage() {
 
   const [images, setImages] = useState<string[]>([])
+
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,7 +72,7 @@ export default function ImagePage() {
       // TODO: Open Pro Modal
       console.log(error)
     } finally {
-      //router.refresh();
+      router.refresh();
     }
   }
 
